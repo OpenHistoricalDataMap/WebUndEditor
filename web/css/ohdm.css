@@ -1,0 +1,19 @@
+body {
+    background-color: #f3f3f3;
+}
+
+#drawProperties {
+    padding: 0% 2% 2% 2%;
+}
+
+#drawProperties > h3 {
+    text-align: center;
+}
+
+.well > .text-hint {
+    color: #aa2412;
+}
+
+.well > .text-example {
+    color: #2e3133;
+}

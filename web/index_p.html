@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Open Historical Data Map (OHDM)</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.0.1/build/ol.js"></script>
+</head>
+<body>
+
+
+<h1>Open Historical Data Map</h1>
+<a href="http://www.sharksystem.net">We</a> are working on a system like
+<a href="http://www.osm.org">Open Street Map</a> but for historic data. That page is just for some basic tests.
+
+A sketch of our plans can be found on <a href="https://www.researchgate.net/publication/303818952_Open_Historical_Data_Map_OHDM_-_work_in_progress">ResearchGate</a>
+
+<div
+        id="map"
+        style="width: 1024px; height: 512px; border: 3px solid #000">
+</div>
+
+Time dimension is already implemented (note date parameter in URL).
+There are no valid historical data in the system, though....
+
+<br/>
+Those buttons are not meant to produce valid output but to help
+while coding the system.
+
+<table>
+    <tr>
+
+        <td>
+            <form method="post" action="index_t.html?date=1900-01-01">
+                <input type="submit" value="1900">
+            </form>
+        </td>
+
+        <td>
+            <form method="post" action="index_t.html?date=2014-01-01">
+                <input type="submit" value="2014">
+            </form>
+        </td>
+
+        <td>
+            <form method="post" action="index_t.html?date=2017-01-01">
+                <input type="submit" value="2017">
+            </form>
+        </td>
+
+    </tr> </table>
+
+
+<br/>
+for development purposes: switch between test data:
+<table>
+    <tr>
+
+        <td>
+            <form method="post" action="index_i.html?">
+                <input type="submit" value="Integration DB">
+            </form>
+        </td>
+
+        <td>
+            <form method="post" action="index_t.html">
+                <input type="submit" value="Test DB">
+            </form>
+        </td>
+
+
+        <td>
+            <form method="post" action="index_p.html">
+                <input type="submit" value="future public DB">
+            </form>
+        </td>
+
+    </tr> </table>
+
+
+<script>
+    var date = location.search.split('date=')[1] ? location.search.split('date=')[1] : '2017-01-01';
+    var mapdate = 'date:' + date;
+
+    //// Lines
+
+    ////// Boundaries
+    var boundary_admin_1_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:boundaries_admin_1', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var boundary_admin_2_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:boundaries_admin_2', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var boundary_admin_4_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:boundaries_admin_4', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+
+    var boundary_admin_6_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:boundaries_admin_6', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+
+    var boundary_admin_9_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:boundaries_admin_9', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_huge_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:highway_huge_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_primary_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:highway_primary_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_secondary_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:highway_secondary_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_small_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:highway_small_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_tertiary_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:highway_tertiary_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_path_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:highway_path_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+
+    var railway_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:railway_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate,
+                /*
+                zIndex: 0,
+                minResolution 200,
+                maxResolution 2000
+                */
+            })
+        })
+
+    //// Polygons
+    var building_apartments =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:building_apartments', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+    var landuse_brown =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_brown', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+    var landuse_commercialetc =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_commercialetc', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var landuse_freegreenandwood =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_freegreenandwood', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var landuse_gardeningandfarm =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_gardeningandfarm', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var landuse_grey =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_grey', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var landuse_industrial =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_industrial', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var landuse_military =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_military', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var landuse_residentaletc =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_residentaletc', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var landuse_transport =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_transport', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var landuse_water =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_p/wms',
+                params: {'LAYERS': 'ohdm_p:landuse_water', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [1492062.75385, 6895234.55805],
+            zoom: 5
+        })
+    });
+
+    map.addLayer(boundary_admin_1_lines);
+    map.addLayer(boundary_admin_2_lines);
+    //	map.addLayer(boundary_admin_3_lines);
+    map.addLayer(boundary_admin_4_lines);
+    //	map.addLayer(boundary_admin_5_lines);
+    map.addLayer(boundary_admin_6_lines);
+    //	map.addLayer(boundary_admin_7_lines);
+    //	map.addLayer(boundary_admin_8_lines);
+    map.addLayer(boundary_admin_9_lines);
+    //	map.addLayer(boundary_admin_10_lines);
+
+    map.addLayer(landuse_brown);
+    map.addLayer(landuse_commercialetc);
+    map.addLayer(landuse_freegreenandwood);
+    map.addLayer(landuse_gardeningandfarm);
+    map.addLayer(landuse_grey);
+    map.addLayer(landuse_industrial);
+    map.addLayer(landuse_military);
+
+    map.addLayer(landuse_residentaletc);
+    map.addLayer(landuse_transport);
+    map.addLayer(landuse_water);
+
+    map.addLayer(building_apartments);
+
+    map.addLayer(railway_lines);
+    map.addLayer(highway_huge_lines);
+    map.addLayer(highway_primary_lines);
+    map.addLayer(highway_secondary_lines);
+    map.addLayer(highway_tertiary_lines);
+    map.addLayer(highway_small_lines);
+    map.addLayer(highway_path_lines);
+
+    //	map.addLayer(shop_points);
+    //	map.addLayer(public_transport_points);
+    //	map.addLayer(natural_points);
+    //	map.addLayer(aeroway_points);
+    //	map.addLayer(craft_points);
+
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+</script>
+</body>
+</html>

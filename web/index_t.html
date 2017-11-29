@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Open Historical Data Map (OHDM)</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.0.1/build/ol.js"></script>
+</head>
+<body>
+
+
+<h1>Open Historic Data Map</h1>
+<a href="http://www.sharksystem.net">We</a> are working on a system like
+<a href="http://www.osm.org">Open Street Map</a> but for historic data. That page is just for some basic tests.
+
+A sketch of our plans can be found on <a href="https://www.researchgate.net/publication/303818952_Open_Historical_Data_Map_OHDM_-_work_in_progress">ResearchGate</a>
+
+<div
+        id="map"
+        style="width: 1024px; height: 512px; border: 3px solid #000">
+</div>
+
+Time dimension is already implemented (note date parameter in URL).
+There are no valid historical data in the system, though....
+
+<br/>
+Those buttons are not meant to produce valid output but to help
+while coding the system.
+
+<table>
+    <tr>
+
+        <td>
+            <form method="post" action="index_t.html?date=1900-01-01">
+                <input type="submit" value="1900">
+            </form>
+        </td>
+
+        <td>
+            <form method="post" action="index_t.html?date=2014-01-01">
+                <input type="submit" value="2014">
+            </form>
+        </td>
+
+        <td>
+            <form method="post" action="index_t.html?date=2017-01-01">
+                <input type="submit" value="2017">
+            </form>
+        </td>
+
+    </tr> </table>
+
+
+<br/>
+for development purposes: switch between test data:
+<table>
+    <tr>
+
+        <td>
+            <form method="post" action="index_i.html?">
+                <input type="submit" value="Integration DB">
+            </form>
+        </td>
+
+        <td>
+            <form method="post" action="index_t.html">
+                <input type="submit" value="Test DB">
+            </form>
+        </td>
+
+
+        <td>
+            <form method="post" action="index_p.html">
+                <input type="submit" value="future public DB">
+            </form>
+        </td>
+
+    </tr> </table>
+
+
+<script>
+    var date = location.search.split('date=')[1] ? location.search.split('date=')[1] : '2017-01-01';
+    var mapdate = 'date:' + date;
+
+    var highway_huge_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+                params: {'LAYERS': 'ohdm_t:highway_huge_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_primary_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+                params: {'LAYERS': 'ohdm_t:highway_primary_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_secondary_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+                params: {'LAYERS': 'ohdm_t:highway_secondary_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_small_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+                params: {'LAYERS': 'ohdm_t:highway_small_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_tertiary_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+                params: {'LAYERS': 'ohdm_t:highway_tertiary_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    var highway_path_lines =
+        new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+                params: {'LAYERS': 'ohdm_t:highway_path_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate
+            })
+        });
+
+    //	var highway_lines =
+    //		new ol.layer.Tile({
+    //			extent: [1444503.7756570787,6861512.981594484,1532647.2409866685,6922911.69188154],
+    //			extent: [372755.162824823,5979055.89950937,2186204.02515461,7957331.13216619],
+    //			source: new ol.source.TileWMS({
+    //			url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+    //			params: {'LAYERS': 'ohdm_t:highway_lines', 'format': 'image/png', 'date': date},
+    //			viewparams: mapdate,
+    //			/*
+    //			zIndex: 0,
+    //			minResolution 200,
+    //			maxResolution 2000
+    //			*/
+    //			})
+    //		})
+
+    var railway_lines =
+        new ol.layer.Tile({
+//			extent: [372755.162824823,5979055.89950937,2186204.02515461,7957331.13216619],
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+                params: {'LAYERS': 'ohdm_t:railway_lines', 'format': 'image/png', 'date': date},
+                viewparams: mapdate,
+                /*
+                zIndex: 0,
+                minResolution 200,
+                maxResolution 2000
+                */
+            })
+        })
+
+    var building_polygons =
+        new ol.layer.Tile({
+//			extent: [372755.162824823,5979055.89950937,2186204.02515461,7957331.13216619],
+            source: new ol.source.TileWMS({
+                url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
+                params: {'LAYERS': 'ohdm_t:building_polygons', 'format': 'image/png', 'date': date},
+                serverType: 'geoserver',
+                viewparams: mapdate
+            })
+        })
+
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [1492062.75385, 6895234.55805],
+            zoom: 11
+        })
+    });
+
+    map.addLayer(building_polygons);
+    map.addLayer(railway_lines);
+    map.addLayer(highway_huge_lines);
+    map.addLayer(highway_primary_lines);
+    map.addLayer(highway_secondary_lines);
+    map.addLayer(highway_tertiary_lines);
+    //	map.addLayer(highway_small_lines);
+    map.addLayer(highway_path_lines);
+
+
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+
+</script>
+</body>
+</html>
