@@ -46,22 +46,22 @@
             <h3>Editor <i id="info-editor" class="fa fa-info-circle" aria-hidden="true"></i></h3>
             <div id="uploadMap" class="well">
                 <label>Upload your Map</label> (jpeg, png)
-                <input id="imageUpload" type="file" name="filename" accept="image/jpg, image/jpeg, image/png"
-                       onchange="readURL(this)">
+                <input id="imageUpload" type="file" name="filename" accept="image/jpg, image/jpeg, image/png">
             </div>
 
             <div id="adjustMap" class="well">
                 <label>Adjust your Map</label>
                 <div><label>Opacity:</label> <input id="opacity" type="range" max="1" step="0.01" value="1"
-                                                    oninput="readRange(this)"></div>
-                <div><label>Height:</label> <input id="mapHeight" type="range"></div>
-                <div><label>Width:</label> <input id="mapWidth" type="range"></div>
-                <div><input type="checkbox"><label>Drag Mode</label></div>
+                                                    oninput="changeOpacity(this)"></div>
+                <div><label>Move on X:</label> <input id="mapHeight" type="range" oninput="change_on_x(this)"></div>
+                <div><label>Move on Y:</label> <input id="mapWidth" type="range"></div>
+                <div><label>Scale the size:</label> <input id="mapScale" type="range"></div>
+                <!--<div><input type="checkbox"> <label>Drag Mode</label></div>-->
             </div>
 
             <div id="drawMap" class="well">
                 <label>Draw your Map</label>
-                <div><input type="checkbox"><label>Draw Mode</label></div>
+                <div><input type="checkbox"> <label>Draw Mode</label></div>
                 <label>Geometry type</label>
                 <select id="type">
                     <option value="Point">Point</option>
@@ -73,8 +73,9 @@
 
             <div id="saveMap" class="well">
                 <label>Save your Map</label>
+                <br>
                 <label>Please choose from a category</label>
-                <!--What was drawn-->
+                <br>
                 <select id="layer_type">
                     <optgroup label="Polygon's">
                         <option value="natural_polygons">Natural polygons</option>
@@ -145,15 +146,17 @@
                     </optgroup>
 
                     <!--<optgroup label="Point's">-->
-                        <!--<option value="shop_points">Shop points</option>-->
-                        <!--<option value="public_transport_points">Public transport points</option>-->
-                        <!--<option value="natural_points">Natural points</option>-->
-                        <!--<option value="aeroway_points">Aeroway points</option>-->
-                        <!--<option value="craft_points">Craft points</option>-->
+                    <!--<option value="shop_points">Shop points</option>-->
+                    <!--<option value="public_transport_points">Public transport points</option>-->
+                    <!--<option value="natural_points">Natural points</option>-->
+                    <!--<option value="aeroway_points">Aeroway points</option>-->
+                    <!--<option value="craft_points">Craft points</option>-->
                     <!--</optgroup>-->
                 </select>
-                <input type="text"><input type="submit">
-                <p class="text-hint" style="color: #491217;">Please give your map a characteristic name.</p>
+                <br>
+                <br>
+                <div><input type="text"> <input type="submit"></div>
+                <p class="text-hint" style="color: #ff0014;">Please give your map a characteristic name.</p>
                 <p class="text-example" style="color: #4b4e50;">e.g. 1811-11-21-Berlin-Kreuzberg</p>
             </div>
             <button onclick="">TESTBUTTON</button>

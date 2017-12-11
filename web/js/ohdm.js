@@ -783,67 +783,110 @@ var map =
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+map.addEventListener('moveend', function (event) {
+    //console.log(map.getView().calculateExtent(map.getSize()));
+});
+
+
+var img_extent = null;
+var overlay_image_layer;
+var img_view_extent;
+var img_source;
+var map_view_extent;
+var multiplier = 100;
+var img_heigth;
+var img_width;
 
 
 // Process data from #drawProperties
-document.getElementById('imageUpload').addEventListener('change', readURL);
-function readURL(input) {
-    var file = input.files[0];
-    var reader = new FileReader();
+var upload = document.getElementById('imageUpload');
+upload.addEventListener('change', dateiupload);
+
+
+function dateiupload(evt) {
     var _URL = window.URL || window.webkitURL;
-    var img, imgWidth, imgHeight;
+    var dateien = evt.target.files; // FileList objekt
 
-    reader.onloadend = function () {
+    // erste Datei auswählen (wichtig, weil IMMER ein FileList Objekt generiert wird)
+    var uploadDatei = dateien[0];
 
-        img = new Image();
-        img.onload = function () {
-            imgWidth = this.width;
-            imgHeight = this.height;
-        };
-        img.src = _URL.createObjectURL(file);
-        //static_img_source.set('url', reader.result);
+    // Ein Objekt um Dateien einzulesen
+    var reader = new FileReader();
 
-        var static_img_source =
-            new ol.source.ImageStatic({
-                projection: ol.proj.get('EPSG:3857'),
-                url: reader.result,
-                imageExtent: [-14483048.340, 2291674.487, -6775420.041, 6947393.399]
-            });
-
-        var overlay_image_layer =
-            new ol.layer.Image({
-                zIndex: 1,
-                source: static_img_source
-            });
-
-        var dragInteraction = new ol.interaction.Modify({
-            features: new ol.Collection([overlay_image_layer]),
-            style: null
-        });
-        alert("sddssd");
-        map.addInteraction(dragInteraction);
+    var senddata = new Object();
+    // Auslesen der Datei-Metadaten
+    senddata.name = uploadDatei.name;
+    senddata.date = uploadDatei.lastModified;
+    senddata.size = uploadDatei.size;
+    senddata.type = uploadDatei.type;
 
 
-        //map.addLayer(overlay_image_layer);
+    // Wenn der Dateiinhalt ausgelesen wurde...
+    reader.onload = function (theFileData) {
+        senddata.fileData = theFileData.target.result; // Ergebnis vom FileReader auslesen
 
+        /*
+        Code für AJAX-Request hier einfügen
+        */
 
-
-        //static_img_source.set('imageExtent', '');//TODO
-
-        var empty = document.createElement('div');
-        document.getElementById('drawProperties').replaceChild(empty, document.getElementById('uploadMap'));
     };
 
-    if (file) {
-        reader.readAsDataURL(file);
-    } else {
-        alert("Error while uploading image! Please try again.")
-    }
+    // Die Datei einlesen und in eine Data-URL konvertieren
+    objectURL = _URL.createObjectURL(uploadDatei);
+
+    // Read out dimensions of the image
+    var image_html = new Image();
+    image_html.src = objectURL;
+
+    var img_width = 0;
+    var img_heigth = 0;
+
+    image_html.onload = function () {
+        img_heigth = image_html.height;
+        img_width = image_html.width;
+
+        // get base image position
+        // [minx, miny, maxx, maxy]
+        map_view_extent = map.getView().calculateExtent(map.getSize());
+        img_view_extent = [map_view_extent[0], map_view_extent[1], map_view_extent[0] + img_width * multiplier, map_view_extent[1] + img_heigth * multiplier];
+        console.log(img_view_extent);
+
+        img_source = new ol.source.ImageStatic({
+            //projection: ol.proj.get('EPSG:3857'),
+            url: objectURL,
+            imageExtent: img_view_extent
+        });
+
+        overlay_image_layer =
+            new ol.layer.Image({
+                zIndex: 1,
+                source: img_source
+            });
+        overlay_image_layer.addEventListener('change', function () {
+            console.log('changed');
+            overlay_image_layer.setMap(map);
+            map.render();
+        });
+
+
+        map.addLayer(overlay_image_layer);
+    };
 }
 
-function readRange(input) {
-    overlay_image_layer.setOpacity(input.valueAsNumber);
+function changeOpacity(event) {
+    overlay_image_layer.set('opacity', event.value);
 }
+
+function change_on_x(event) {
+    console.log(event.value);
+    var temp = [img_view_extent[0] + (parseInt(event.value)), img_view_extent[1], img_view_extent[2] + (parseInt(event.value)), img_view_extent[3]]
+    console.log(temp);
+    img_source.set('imageExtent', temp);
+    overlay_image_layer.changed();
+
+}
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -856,7 +899,8 @@ function readRange(input) {
 map.getLayerGroup().set('name', 'Root');
 
 document.getElementById('info-editor').addEventListener('click', function () {
-    alert("Please read this information carefully\n" +
-        "You can only draw one layer at a time.\n" +
-        "\tOne layer could be a building, a river or a street")
+    document.alert("Please read this information carefully!\n\n" +
+        "Right now you can only draw one layer at a time.\n" +
+        "One layer could be a building, a river or a street\n" +
+        "Please note that label's for the above mentioned layer's are layer's themselves.")
 });

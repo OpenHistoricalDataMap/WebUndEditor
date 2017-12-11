@@ -17,3 +17,7 @@ body {
 .well > .text-example {
     color: #2e3133;
 }
+
+.well > * {
+    width: 100%;
+}
