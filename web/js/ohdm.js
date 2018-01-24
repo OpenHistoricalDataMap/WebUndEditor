@@ -743,17 +743,17 @@ function loadBaseMapLayers() {
 
 }
 
-function loadMapInteractions() {
-    select =
-        new ol.interaction.Select();
-
-    translate =
-        new ol.interaction.Translate({
-            features: select.getFeatures(),
-            layers: [overlay_image_layer]
-        });
-
-}
+// function loadMapInteractions() {
+//     select =
+//         new ol.interaction.Select();
+//
+//     translate =
+//         new ol.interaction.Translate({
+//             features: select.getFeatures(),
+//             layers: [overlay_image_layer]
+//         });
+//
+// }
 
 loadBaseMapLayers();
 
@@ -838,8 +838,8 @@ function dateiupload(evt) {
     var image_html = new Image();
     image_html.src = objectURL;
 
-    var img_width = 0;
-    var img_heigth = 0;
+    img_width = 0;
+    img_heigth = 0;
 
     image_html.onload = function () {
         img_heigth = image_html.height;
@@ -864,7 +864,6 @@ function dateiupload(evt) {
             });
         overlay_image_layer.addEventListener('change', function () {
             console.log('changed');
-            overlay_image_layer.setMap(map);
             map.render();
         });
 
@@ -873,17 +872,17 @@ function dateiupload(evt) {
     };
 }
 
-function changeOpacity(event) {
-    overlay_image_layer.set('opacity', event.value);
-}
-
 function change_on_x(event) {
-    console.log(event.value);
     var temp = [img_view_extent[0] + (parseInt(event.value)), img_view_extent[1], img_view_extent[2] + (parseInt(event.value)), img_view_extent[3]]
     console.log(temp);
     img_source.set('imageExtent', temp);
+    overlay_image_layer.setMap(map);
     overlay_image_layer.changed();
 
+}
+
+function changeOpacity(event) {
+    overlay_image_layer.set('opacity', event.value);
 }
 
 
