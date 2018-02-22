@@ -1,6 +1,8 @@
 package servlet;
 
-import jdk.nashorn.api.scripting.JSObject;
+import org.json.HTTP;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static java.net.Proxy.Type.HTTP;
 
 @WebServlet(name = "addNewData")
 public class addNewData extends HttpServlet {
