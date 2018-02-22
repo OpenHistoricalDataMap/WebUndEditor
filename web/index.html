@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Welcome to Open Historical Data Map (OHDM)</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--OpenLayer's-->
@@ -12,11 +13,16 @@
 
 
     <!--jQuery-->
-    <script language="JavaScript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--<script language="JavaScript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
     <!--<script language="JavaScript" type="text/javascript" src="js/jquery-ui.js"></script>-->
-    <link rel="stylesheet" href="css/jquery-ui.css">
-    <link rel="stylesheet" href="css/jquery-ui.structure.css">
-    <link rel="stylesheet" href="css/jquery-ui.theme.css">
+    <!--<link rel="stylesheet" href="css/jquery-ui.css">-->
+    <!--<link rel="stylesheet" href="css/jquery-ui.structure.css">-->
+    <!--<link rel="stylesheet" href="css/jquery-ui.theme.css">-->
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!--<link rel="stylesheet" href="https://code.jquery.com/resources/demos/style.css">-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!--Bootstrap-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -44,6 +50,14 @@
 
         <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 panel" id="drawProperties">
             <h3>Editor <i id="info-editor" class="fa fa-info-circle" aria-hidden="true"></i></h3>
+
+            <div id="dialog" title="Information">
+                <p><strong>Please read carefully!</strong></p>
+                <p>Right now you can only draw one layer at a time.</p>
+                <p>One layer could be a building, a river or a street</p>
+                <p>Please note that label's for the above mentioned layer's are layer's themselves.</p>
+            </div>
+
             <div id="uploadMap" class="well">
                 <label>Upload your Map</label> (jpeg, png)
                 <input id="imageUpload" type="file" name="filename" accept="image/jpg, image/jpeg, image/png">
@@ -208,8 +222,10 @@
         </tr>
     </table>
 </div>
-<script src="js/map-layers.js"></script>
-<script src="js/ohdm.js"></script>
+<script type="application/javascript" src="js/map-layers.js"></script>
+<script type="application/javascript" src="js/ohdm.js"></script>
+<script type="application/javascript" src="js/upload.js"></script>
+<script type="application/javascript" src="js/info.js"></script>
 </body>
 </html>
 

@@ -1,6 +1,4 @@
-<script>
-
-    var flickrSource = new ol.source.Vector();
+var flickrSource = new ol.source.Vector();
 
     var cache = {};
 
@@ -42,11 +40,6 @@
       zoom: 2
     });
 
-    var map = new ol.Map({
-      target: 'map',
-      layers: [layer, flickrLayer],
-      view: view
-    });
 
     // a simple templating function that replaces keywords wrapped in
     // curly brackets with the equivalent value from the feature properties
@@ -106,8 +99,6 @@
       success: successHandler
     });
 
-    </script>
-
 
 map.addEventListener('moveend', function (event) {
     //console.log(map.getView().calculateExtent(map.getSize()));
@@ -130,6 +121,7 @@ upload.addEventListener('change', dateiupload);
 
 
 function dateiupload(evt) {
+    alert('Here');
     var _URL = window.URL || window.webkitURL;
     var dateien = evt.target.files; // FileList objekt
 
@@ -177,23 +169,44 @@ function dateiupload(evt) {
         img_view_extent = [map_view_extent[0], map_view_extent[1], map_view_extent[0] + img_width * multiplier, map_view_extent[1] + img_heigth * multiplier];
         console.log(img_view_extent);
 
-        img_source = new ol.source.ImageStatic({
-            //projection: ol.proj.get('EPSG:3857'),
-            url: objectURL,
-            imageExtent: img_view_extent
-        });
+        // img_source = new ol.source.ImageStatic({
+        //     //projection: ol.proj.get('EPSG:3857'),
+        //     url: objectURL,
+        //     imageExtent: img_view_extent
+        // });
+        //
+        // overlay_image_layer =
+        //     new ol.layer.Image({
+        //         zIndex: 1,
+        //         source: img_source
+        //     });
+        // overlay_image_layer.addEventListener('change', function () {
+        //     console.log('changed');
+        //     map.render();
+        // });
+        //
+        //
+        // map.addLayer(overlay_image_layer);
 
-        overlay_image_layer =
-            new ol.layer.Image({
-                zIndex: 1,
-                source: img_source
-            });
-        overlay_image_layer.addEventListener('change', function () {
-            console.log('changed');
-            map.render();
-        });
+        var feature = new ol.Feature(item);
+        feature.set('url', item.media.m);
+        var coordinate = transform([parseFloat(item.longitude), parseFloat(item.latitude)]);
+        var geometry = new ol.geom.Point(coordinate);
+        feature.setGeometry(geometry);
+        flickrSource.addFeature(feature);
 
 
-        map.addLayer(overlay_image_layer);
+        function change_on_x(event) {
+            var temp = [img_view_extent[0] + (parseInt(event.value)), img_view_extent[1], img_view_extent[2] + (parseInt(event.value)), img_view_extent[3]]
+            console.log(temp);
+            img_source.set('imageExtent', temp);
+            overlay_image_layer.setMap(map);
+            overlay_image_layer.changed();
+
+        }
+
+        function changeOpacity(event) {
+            overlay_image_layer.set('opacity', event.value);
+        }
     };
 }

@@ -44,38 +44,9 @@ var feature = new ol.Feature({
   name: 'My Polygon'
 });
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-function change_on_x(event) {
-    var temp = [img_view_extent[0] + (parseInt(event.value)), img_view_extent[1], img_view_extent[2] + (parseInt(event.value)), img_view_extent[3]]
-    console.log(temp);
-    img_source.set('imageExtent', temp);
-    overlay_image_layer.setMap(map);
-    overlay_image_layer.changed();
-
-}
-
-function changeOpacity(event) {
-    overlay_image_layer.set('opacity', event.value);
-}
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 // deprecated code -> open layer's 2
 //map.addControl(new OpenLayers.Control.LayerSwitcher());
 
 // Name the root layer group
 map.getLayerGroup().set('name', 'Root');
 
-document.getElementById('info-editor').addEventListener('click', function () {
-    document.alert("Please read this information carefully!\n\n" +
-        "Right now you can only draw one layer at a time.\n" +
-        "One layer could be a building, a river or a street\n" +
-        "Please note that label's for the above mentioned layer's are layer's themselves.")
-});
