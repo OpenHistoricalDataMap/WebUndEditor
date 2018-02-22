@@ -5,6 +5,10 @@
     <title></title>
 </head>
 <body>
-
+Test
 </body>
 </html>
+
+<%
+    System.out.println("Fuck you");
+%>
