@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Open Historical Data Map (OHDM)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!--OpenLayer's-->
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v4.0.1/build/ol.js"></script>
+
+
+    <!--jQuery-->
+    <!--<script language="JavaScript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script language="JavaScript" type="text/javascript" src="js/jquery-ui.js"></script>-->
+    <!--<link rel="stylesheet" href="css/jquery-ui.css">-->
+    <!--<link rel="stylesheet" href="css/jquery-ui.structure.css">-->
+    <!--<link rel="stylesheet" href="css/jquery-ui.theme.css">-->
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!--<link rel="stylesheet" href="https://code.jquery.com/resources/demos/style.css">-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--FontAwesome-->
+    <link rel="stylesheet" href="css/font-awesome.css">
+
+    <!--OHDM CSS-->
+    <link rel="stylesheet" href="css/ohdm.css">
+
+
+</head>
+<body>
+<div class="container-fluid">
+    <h1>Open Historical Data Map</h1>
+    <a href="http://www.sharksystem.net">We</a> are working on a system like
+    <a href="http://www.osm.org">Open Street Map</a> but for historic data. That page is just for some basic tests.
+    A sketch of our plans can be found on <a
+        href="https://www.researchgate.net/publication/303818952_Open_Historical_Data_Map_OHDM_-_work_in_progress">ResearchGate</a>
+    <div class="row">
+        <div class="col-sm-9 col-md-9 col-lg-9 col-xl-9">
+            <div id="map" class="map panel"></div>
+        </div>
+
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 panel" id="drawProperties">
+            <h3>Editor <i id="info-editor" class="fa fa-info-circle" aria-hidden="true"></i></h3>
+
+            <div id="dialog" title="Information">
+                <p><strong>Please read carefully!</strong></p>
+                <p>Right now you can only draw one layer at a time.</p>
+                <p>One layer could be a building, a river or a street</p>
+                <p>Please note that label's for the above mentioned layer's are layer's themselves.</p>
+            </div>
+
+            <div id="uploadMap" class="well">
+                <label>Upload your Map</label> (jpeg, png)
+                <input id="upload" type="file" name="filename" accept="image/jpg, image/jpeg, image/png">
+            </div>
+
+            <div id="adjustMap" class="well">
+                <label>Adjust your Map</label>
+                <div><label>Opacity:</label> <input id="opacity" type="range" max="1" step="0.01" value="1"></div>
+                <div><label>Move on X:</label> <input id="moveX" type="range" min="-1000" max="1000" value="0" step="-0.01"></div>
+                <div><label>Move on Y:</label> <input id="moveY" type="range" min="-1000" max="1000" value="0" step="-0.01"></div>
+                <div><label>Scale the size:</label> <input id="imageScale" type="range" value="1" step="0.01" max="10"></div>
+                <!--<div><input type="checkbox"> <label>Drag Mode</label></div>-->
+            </div>
+
+            <div id="drawMap" class="well">
+                <label>Draw your Map</label>
+                <div><input type="checkbox"> <label>Draw Mode</label></div>
+                <label>Geometry type</label>
+                <select id="type">
+                    <option value="Point">Point</option>
+                    <option value="LineString">LineString</option>
+                    <option value="Polygon">Polygon</option>
+                    <option value="Circle">Circle</option>
+                </select>
+            </div>
+
+            <div id="saveMap" class="well">
+                <label>Save your Map</label>
+                <br>
+                <label>Please choose from a category</label>
+                <br>
+                <select id="layer_type">
+                    <optgroup label="Polygon's">
+                        <option value="natural_polygons">Natural polygons</option>
+                        <option value="military_polygons">Military polygons</option>
+                        <option value="waterway_polygons">Waterway polygons</option>
+                        <option value="geological_polygons">Geological polygons</option>
+                        <option value="aeroway_polygons">Aeroway polygons</option>
+                        <option value="emergency_polygons">Emergency polygons</option>
+                        <option value="building_polygons">Building polygons</option>
+                    </optgroup>
+
+                    <optgroup label="Label for polygon's">
+                        <option value="natural_polygons_label">Natural polygons label</option>
+                        <option value="military_polygons_label">Military polygons_label</option>
+                        <option value="waterway_polygons_label">Waterway polygons label</option>
+                        <option value="geological_polygons_label">Geological polygons label</option>
+                        <option value="aeroway_polygons_label">Aeroway polygons label</option>
+                        <option value="emergency_polygons_label">Emergency polygons label</option>
+                        <option value="building_polygons_label">Building polygons label</option>
+                    </optgroup>
+
+                    <optgroup label="Landuse">
+                        <option value="landuse_brown">Landuse brown</option>
+                        <option value="landuse_commercialetc">Landuse commercial etc.</option>
+                        <option value="landuse_freegreenandwood">Landuse free green and wood</option>
+                        <option value="landuse_gardeningandfarm">Landuse gardening and farm</option>
+                        <option value="landuse_grey">Landuse grey</option>
+                        <option value="landuse_industrial">Landuse industrial</option>
+                        <option value="landuse_military">Landuse military</option>
+                        <option value="landuse_residentialetc">Landuse residential etc.</option>
+                        <option value="landuse_transport">Landuse transport</option>
+                        <option value="landuse_water">Landuse water</option>
+                    </optgroup>
+
+                    <optgroup label="Label for landuse">
+                        <option value="landuse_brown_label">Landuse brown label</option>
+                        <option value="landuse_commercialetc_label">Landuse commercial etc. label</option>
+                        <option value="landuse_freegreenandwood_label">Landuse free green and wood label</option>
+                        <option value="landuse_gardeningandfarm_label">Landuse gardening and farm label</option>
+                        <option value="landuse_grey_label">Landuse grey label</option>
+                        <option value="landuse_industrial_label">Landuse industrial label</option>
+                        <option value="landuse_military_label">Landuse military label</option>
+                        <option value="landuse_residentialetc_label">Landuse residential etc. label</option>
+                        <option value="landuse_transport_label">Landuse transport label</option>
+                        <option value="landuse_water_label">Landuse water label</option>
+                    </optgroup>
+
+                    <optgroup label="Line's">
+                        <option value="highway_path_lines">Highway path lines</option>
+                        <option value="highway_small_lines">Highway small lines</option>
+                        <option value="highway_tertiary_lines">Highway tertiary lines</option>
+                        <option value="highway_huge_lines">Highway huge lines</option>
+                        <option value="highway_secondary_lines">Highway secondary lines</option>
+                        <option value="highway_primary_lines">Highway primary lines</option>
+                        <option value="railway_lines">Railway lines</option>
+                    </optgroup>
+
+                    <optgroup label="Border's">
+                        <option value="boundary_admin_2_lines">Boundary admin_2 lines</option>
+                        <!--<option value="boundary_admin_3_lines">Boundary admin_3 lines</option>-->
+                        <option value="boundary_admin_4_lines">Boundary admin_4 lines</option>
+                        <!--<option value="boundary_admin_5_lines">Boundary admin_5 lines</option>-->
+                        <option value="boundary_admin_6_lines">Boundary admin_6 lines</option>
+                        <!--<option value="boundary_admin_7_lines">Boundary_admin_7 lines</option>-->
+                        <!--<option value="boundary_admin_8_lines">Boundary_admin_8 lines</option>-->
+                        <option value="boundary_admin_9_lines">Boundary admin_9 lines</option>
+                        <!--<option value="boundary_admin_10_lines">Boundary admin_10 lines</option>-->
+                    </optgroup>
+
+                    <!--<optgroup label="Point's">-->
+                    <!--<option value="shop_points">Shop points</option>-->
+                    <!--<option value="public_transport_points">Public transport points</option>-->
+                    <!--<option value="natural_points">Natural points</option>-->
+                    <!--<option value="aeroway_points">Aeroway points</option>-->
+                    <!--<option value="craft_points">Craft points</option>-->
+                    <!--</optgroup>-->
+                </select>
+                <br>
+                <br>
+                <div><input type="text"> <input type="submit"></div>
+                <p class="text-hint" style="color: #ff0014;">Please give your map a characteristic name.</p>
+                <p class="text-example" style="color: #4b4e50;">e.g. 1811-11-21-Berlin-Kreuzberg</p>
+            </div>
+            <button onclick="">TESTBUTTON</button>
+        </div>
+    </div>
+    Time dimension is already implemented (note date parameter in URL).
+    There are no valid historical data in the system, though....
+    <br/>
+    Those buttons are not meant to produce valid output but to help
+    while coding the system.
+    <table>
+        <tr>
+            <td>
+                <form method="post" action="index_t.html?date=1900-01-01">
+                    <input type="submit" value="1900">
+                </form>
+            </td>
+            <td>
+                <form method="post" action="index_t.html?date=2014-01-01">
+                    <input type="submit" value="2014">
+                </form>
+            </td>
+            <td>
+                <form method="post" action="index_t.html?date=2017-01-01">
+                    <input type="submit" value="2017">
+                </form>
+            </td>
+        </tr>
+    </table>
+    <br/>
+    for development purposes: switch between test data:
+    <table>
+        <tr>
+            <td>
+                <form method="post" action="index_i.html?">
+                    <input type="submit" value="Integration DB">
+                </form>
+            </td>
+            <td>
+                <form method="post" action="index_t.html">
+                    <input type="submit" value="Test DB">
+                </form>
+            </td>
+            <td>
+                <form method="post" action="index_p.html">
+                    <input type="submit" value="future public DB">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<div id="testDiv">
+
+    <button id="button">TESTBUTTON</button>
+</div>
+
+<script>
+    var json = {
+        "name": "value",
+        "timestamp": "2010-11-1",
+        "objectType": "pont",               //"[point, line, polygon]",
+        "data": [1, 1, 1],                    //"[coordinates]",
+        "category": "landuse_brown"         //"siehe oben"
+    };
+
+    $("#button").click(function () {
+        $.ajax({
+            type: "POST",
+            data: json,
+            url: "http://192.168.178.42:8080/info",
+            contentType: "application/json"
+        });
+    });
+
+
+</script>
+
+<script type="application/javascript" src="js/map-layers.js"></script>
+<script type="application/javascript" src="js/ohdm.js"></script>
+<script type="application/javascript" src="js/upload.js"></script>
+<script type="application/javascript" src="js/imageProcessing.js"></script>
+<script type="application/javascript" src="js/info.js"></script>
+</body>
+</html>
+
