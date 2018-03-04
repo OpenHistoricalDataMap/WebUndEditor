@@ -7,22 +7,6 @@ function addImageToMap(HTMLCanvas) {
 
     point = new ol.geom.Point(getMapCenter());
 
-    //var mapCenter = getMapCenter();
-
-    // var polycoords = [
-    //     [mapCenter[0], mapCenter[1]],
-    //     [mapCenter[0] + HTMLCanvas.width, mapCenter[1]],
-    //     [mapCenter[0] + HTMLCanvas.width, mapCenter[1] + HTMLCanvas.height],
-    //     [mapCenter[0], mapCenter[1] + HTMLCanvas.height],
-    //     [mapCenter[0], mapCenter[1]]
-    // ];
-
-    // var photoFeature = new ol.Feature(
-    //     {
-    //         geometry : new ol.geom.Polygon(polycoords)
-    //     }
-    // );
-
     var photoFeature = new ol.Feature();
 
     photoFeature.setGeometry(point);
@@ -43,30 +27,27 @@ function addImageToMap(HTMLCanvas) {
 
     map.addLayer(imageLayer);
 
-    function render() {
+    function rerender() {
         photoFeature.changed();
     }
 
-
-///////////////////////////////////////////////////////////////////////////
-
-
     function scaleImage(scale) {
         style.getImage().setScale(scale);
-        render();
+        rerender();
     }
 
     function setOpacity(opacity) {
         style.getImage().setOpacity(opacity);
-        render();
+        rerender();
     }
 
     function movePointTo(x, y) {
         point.setCoordinates([x, y]);
-        render();
+        rerender();
     }
 
     var origin = photoFeature.getGeometry().getCoordinates();
+
     function movePointBy(x, y) {
         photoFeature.getGeometry().setCoordinates(
             [
@@ -74,7 +55,7 @@ function addImageToMap(HTMLCanvas) {
                 origin[1] + y
             ]
         );
-        render();
+        rerender();
     }
 
     var imageScale = document.getElementById("imageScale");
@@ -102,22 +83,19 @@ function addImageToMap(HTMLCanvas) {
         movePointBy(0, value);
     })
 
+    var select = new ol.interaction.Select();
 
-///////////////////////////////////////////////////////////////////////////
+    var translate = new ol.interaction.Translate({
+        features: select.getFeatures()
+    });
+
+    map.addInteraction(select);
+    map.addInteraction(translate);
 }
-
-///////////////////////////////////////////////////////////////////////////
-
-// feature >> geometry.Point
-// feature >> style.icon >> image
 
 function getMapCenter() {
-    console.log(map.getView().getCenter());
     return map.getView().getCenter();
 }
-
-///////////////////////////////////////////////////////////////////////////
-
 
 function createStyle(HTMLCanvas) {
     var imgSize = [HTMLCanvas.width, HTMLCanvas.height];
@@ -135,6 +113,4 @@ function createStyle(HTMLCanvas) {
             )
         }
     )
-
-
 }

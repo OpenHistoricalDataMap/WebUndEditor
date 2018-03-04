@@ -21,3 +21,9 @@ body {
 .well > * {
     width: 100%;
 }
+
+#map {
+    height: 700px;
+    max-height: fit-content;
+
+}
