@@ -1,7 +1,9 @@
 var source = new ol.source.Vector({wrapX: false});
+var collection = new ol.Collection();
 
 var vector = new ol.layer.Vector({
-    source: source
+    source: source,
+    zIndex: 1
 });
 
 map.addLayer(vector);
@@ -14,13 +16,13 @@ var drawModeToggle = document.getElementById("drawModeToggle");
 var testButton = document.getElementById("testButton");
 
 testButton.addEventListener('click', function () {
-   getfeatures();
+    getfeatures();
 });
 
 drawModeToggle.addEventListener("change", function () {
+    console.log(drawModeToggle.checked);
     if (drawModeToggle.checked) {
         addInteraction(draw);
-        draw.setProperties(nameSelect.value);
     } else {
         map.removeInteraction(draw);
     }
@@ -32,9 +34,19 @@ function addInteraction() {
     if (value !== 'None') {
         draw = new ol.interaction.Draw({
             source: source,
-            type: typeSelect.value
+            features: collection,
+            type: typeSelect.value,
         });
-        map.addInteraction(draw);
+        draw.on('drawend', function(e) {
+            e.feature.setProperties({
+                'name': nameSelect.value
+            });
+        });
+        if (drawModeToggle.checked) {
+            map.addInteraction(draw);
+        } else {
+            map.removeInteraction(draw);
+        }
     }
 }
 
@@ -42,7 +54,18 @@ function addInteraction() {
 /**
  * Handle change event.
  */
-typeSelect.onchange = function() {
+typeSelect.onchange = function () {
+
+    switch (typeSelect.value) {
+        case 'LineString':
+            $('.line').show();
+            $('.polygon').hide();
+            break;
+        case 'Polygon':
+            $('.line').hide();
+            $('.polygon').show();
+            break;
+    }
     map.removeInteraction(draw);
     addInteraction();
 };
@@ -50,16 +73,17 @@ typeSelect.onchange = function() {
 nameSelect.onchange = function (ev) {
     map.removeInteraction(draw);
     addInteraction();
-    draw.setProperties(nameSelect.value);
 };
 
 
-
-function getfeatures(){
-    var writer = new ol.format.GeoJSON();
-    var geojsonStr = writer.writeFeatures(source.getFeatures());
+function getfeatures() {
+    var writer = new ol.format.GeoJSON({
+        extractGeometryName: true
+    });
+    var geojsonStr = writer.writeFeatures(collection.getArray());
 
     console.log(geojsonStr);
+    console.log(writer.writeFeaturesObject(collection.getArray()))
 
     // document.getElementById("demo").innerHTML = geojsonStr;
 }

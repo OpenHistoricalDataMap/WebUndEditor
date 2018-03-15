@@ -1,8 +1,3 @@
-map.addEventListener('moveend', function (event) {
-    // put action here
-});
-
-
 // Process data from #drawProperties
 document.getElementById("upload").addEventListener('change', dateiupload);
 
@@ -43,8 +38,11 @@ function dateiupload(evt) {
     img_heigth = 0;
 
     image_html.onload = function () {
-        console.log("image_html.onload");
         addImageToMap(image_html);
+        $('#uploadMap').hide("slide", {direction: 'left'}, 250);
+        setTimeout(
+            $('#adjustMap').hide().show("slide", {direction: 'right'}, 250)
+            , 250);
     };
 }
 
@@ -54,4 +52,3 @@ function dateiupload(evt) {
 
 
 
-// TODO gejson datum author

@@ -30,7 +30,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!--FontAwesome-->
-    <link rel="stylesheet" href="css/font-awesome.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <!--<link rel="stylesheet" href="css/font-awesome.css">-->
 
     <!--OHDM CSS-->
     <link rel="stylesheet" href="css/ohdm.css">
@@ -38,17 +39,20 @@
 
 </head>
 <body>
-<div class="container-fluid">
+<div class="container">
     <h1>Open Historical Data Map</h1>
     <a href="http://www.sharksystem.net">We</a> are working on a system like
     <a href="http://www.osm.org">Open Street Map</a> but for historic data. That page is just for some basic tests.
     A sketch of our plans can be found on <a
         href="https://www.researchgate.net/publication/303818952_Open_Historical_Data_Map_OHDM_-_work_in_progress">ResearchGate</a>
+
+
     <div class="row">
         <div id="map" class="col-sm-9 col-md-9 col-lg-9 col-xl-9">
         </div>
 
-        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 panel" id="drawProperties">
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 panel" id="editorPanel">
+
             <h3>Editor <i id="info-editor" class="fa fa-info-circle" aria-hidden="true"></i></h3>
 
             <div id="dialog" title="Information">
@@ -58,140 +62,168 @@
                 <p>Please note that label's for the above mentioned layer's are layer's themselves.</p>
             </div>
 
-            <div id="uploadMap" class="well">
-                <label>Upload your Map</label> (jpeg, png)
-                <input id="upload" type="file" name="filename" accept="image/jpg, image/jpeg, image/png">
-            </div>
-
-            <div id="adjustMap" class="well">
-                <label>Adjust your Map</label>
-                <div><label>Opacity:</label> <input id="opacity" type="range" max="1" step="0.01" value="1"></div>
-                <div><label>Move on X:</label> <input id="moveX" type="range" min="-1000" max="1000" value="0"
-                                                      step="-0.01"></div>
-                <div><label>Move on Y:</label> <input id="moveY" type="range" min="-1000" max="1000" value="0"
-                                                      step="-0.01"></div>
-                <div><label>Scale the size:</label> <input id="imageScale" type="range" value="1" step="0.01" max="10">
+            <div class="flex-wraper">
+                <div id="uploadMap" class="well">
+                    <label>Upload your Map</label> (jpeg, png)
+                    <input id="upload" type="file" name="filename" accept="image/jpg, image/jpeg, image/png">
                 </div>
-                <!--<div><input type="checkbox"> <label>Drag Mode</label></div>-->
-            </div>
 
-            <div id="drawMap" class="well">
-                <label>Draw your Map</label>
-                <hr>
-                <div>
-                    <input id="drawModeToggle" type="checkbox">
-                    <label>Draw Mode</label>
-                </div>
-                <button id="testButton">Export</button>
-                <div>
-                    <label>Geometry type</label>
+                <div id="adjustMap" class="well">
+
+
+                    <div class="navigator">
+                        <button id="backToUpload" class="navigator-button back"><i class="fas fa-angle-left"></i></button>
+                        <label class="margin-center">Adjust your Map</label>
+                        <button id="goToDraw" class="navigator-button next"><i class="fas fa-angle-right"></i></button>
+                    </div>
+                    <hr class="separator">
+
+
+                    <div><label>Opacity:</label> <input id="opacity" type="range" max="1" step="0.01" value="1"></div>
+                    <!--<div><label>Move on X:</label> <input id="moveX" type="range" min="-1000" max="1000" value="0"-->
+                                                          <!--step="-0.01"></div>-->
+                    <!--<div><label>Move on Y:</label> <input id="moveY" type="range" min="-1000" max="1000" value="0"-->
+                                                          <!--step="-0.01"></div>-->
+                    <div><label>Scale:</label> <input id="imageScale" type="range" value="1" step="0.0000001" min="0.0000001" max="10">
+                    </div>
                     <br>
-                    <select id="type">
-                        <option value="Point">Point</option>
-                        <option value="LineString">LineString</option>
-                        <option value="Polygon">Polygon</option>
-                        <option value="Circle">Circle</option>
-                    </select>
-                    <br>
-                    <span>Select a geometry type from the dropdown above to start drawing. To finish drawing, click the last point. To activate freehand drawing for lines, polygons, and circles, hold the <strong>Shift<strong></strong> key.</span>
+                    <div><p>Click to select and drag the image to move it.</p></div>
                 </div>
-                <hr>
-                <div id="categoryDiv">
-                    <label>Please choose from a category</label>
-                    <br>
-                    <select id="vector_name">
-                        <optgroup label="Polygon's">
-                            <option value="natural_polygons">Natural polygons</option>
-                            <option value="military_polygons">Military polygons</option>
-                            <option value="waterway_polygons">Waterway polygons</option>
-                            <option value="geological_polygons">Geological polygons</option>
-                            <option value="aeroway_polygons">Aeroway polygons</option>
-                            <option value="emergency_polygons">Emergency polygons</option>
-                            <option value="building_polygons">Building polygons</option>
-                        </optgroup>
 
-                        <optgroup label="Label for polygon's">
-                            <option value="natural_polygons_label">Natural polygons label</option>
-                            <option value="military_polygons_label">Military polygons_label</option>
-                            <option value="waterway_polygons_label">Waterway polygons label</option>
-                            <option value="geological_polygons_label">Geological polygons label</option>
-                            <option value="aeroway_polygons_label">Aeroway polygons label</option>
-                            <option value="emergency_polygons_label">Emergency polygons label</option>
-                            <option value="building_polygons_label">Building polygons label</option>
-                        </optgroup>
+                <div id="drawMap" class="well">
+                    <div class="navigator">
+                        <button id="backToAdjust" class="navigator-button back"><i class="fas fa-angle-left"></i></button>
+                        <label class="margin-center">Draw your Map</label>
+                        <button id="goToSave" class="navigator-button next"><i class="fas fa-angle-right"></i></button>
+                    </div>
+                    <hr class="separator">
+                    <div>
+                        <span>Select a geometry type from the dropdown below to start drawing.
+                            To finish drawing, click the last point.
+                            To activate freehand drawing for lines and polygons, hold the <strong class="code">Shift</strong> key.</span>
+                        <br>
+                        <input id="drawModeToggle" type="checkbox">
+                        <label>Draw Mode</label>
+                    </div>
+                    <div>
+                        <label>Geometry type</label>
+                        <br>
+                        <select id="type">
+                            <option value="Point">Point</option>
+                            <option value="LineString">LineString</option>
+                            <option value="Polygon">Polygon</option>
+                        </select>
+                        <br>
+                        <label>Label for this geometry:</label><input id="label" type="text">
+                        <br>
 
-                        <optgroup label="Landuse">
-                            <option value="landuse_brown">Landuse brown</option>
-                            <option value="landuse_commercialetc">Landuse commercial etc.</option>
-                            <option value="landuse_freegreenandwood">Landuse free green and wood</option>
-                            <option value="landuse_gardeningandfarm">Landuse gardening and farm</option>
-                            <option value="landuse_grey">Landuse grey</option>
-                            <option value="landuse_industrial">Landuse industrial</option>
-                            <option value="landuse_military">Landuse military</option>
-                            <option value="landuse_residentialetc">Landuse residential etc.</option>
-                            <option value="landuse_transport">Landuse transport</option>
-                            <option value="landuse_water">Landuse water</option>
-                        </optgroup>
+                    </div>
+                    <hr>
+                    <div id="categoryDiv">
+                        <label>Please choose from a category</label>
+                        <br>
+                        <select id="vector_name">
+                            <optgroup class="polygon" label="Polygon's">
+                                <option value="natural_polygons">Natural polygons</option>
+                                <option value="military_polygons">Military polygons</option>
+                                <option value="waterway_polygons">Waterway polygons</option>
+                                <option value="geological_polygons">Geological polygons</option>
+                                <option value="aeroway_polygons">Aeroway polygons</option>
+                                <option value="emergency_polygons">Emergency polygons</option>
+                                <option value="building_polygons">Building polygons</option>
+                            </optgroup>
 
-                        <optgroup label="Label for landuse">
-                            <option value="landuse_brown_label">Landuse brown label</option>
-                            <option value="landuse_commercialetc_label">Landuse commercial etc. label</option>
-                            <option value="landuse_freegreenandwood_label">Landuse free green and wood label</option>
-                            <option value="landuse_gardeningandfarm_label">Landuse gardening and farm label</option>
-                            <option value="landuse_grey_label">Landuse grey label</option>
-                            <option value="landuse_industrial_label">Landuse industrial label</option>
-                            <option value="landuse_military_label">Landuse military label</option>
-                            <option value="landuse_residentialetc_label">Landuse residential etc. label</option>
-                            <option value="landuse_transport_label">Landuse transport label</option>
-                            <option value="landuse_water_label">Landuse water label</option>
-                        </optgroup>
+                            <!--<optgroup label="Label for polygon's">-->
+                                <!--<option value="natural_polygons_label">Natural polygons label</option>-->
+                                <!--<option value="military_polygons_label">Military polygons_label</option>-->
+                                <!--<option value="waterway_polygons_label">Waterway polygons label</option>-->
+                                <!--<option value="geological_polygons_label">Geological polygons label</option>-->
+                                <!--<option value="aeroway_polygons_label">Aeroway polygons label</option>-->
+                                <!--<option value="emergency_polygons_label">Emergency polygons label</option>-->
+                                <!--<option value="building_polygons_label">Building polygons label</option>-->
+                            <!--</optgroup>-->
 
-                        <optgroup label="Line's">
-                            <option value="highway_path_lines">Highway path lines</option>
-                            <option value="highway_small_lines">Highway small lines</option>
-                            <option value="highway_tertiary_lines">Highway tertiary lines</option>
-                            <option value="highway_huge_lines">Highway huge lines</option>
-                            <option value="highway_secondary_lines">Highway secondary lines</option>
-                            <option value="highway_primary_lines">Highway primary lines</option>
-                            <option value="railway_lines">Railway lines</option>
-                        </optgroup>
+                            <optgroup class="polygon" label="Landuse">
+                                <option value="landuse_brown">Landuse brown</option>
+                                <option value="landuse_commercialetc">Landuse commercial etc.</option>
+                                <option value="landuse_freegreenandwood">Landuse free green and wood</option>
+                                <option value="landuse_gardeningandfarm">Landuse gardening and farm</option>
+                                <option value="landuse_grey">Landuse grey</option>
+                                <option value="landuse_industrial">Landuse industrial</option>
+                                <option value="landuse_military">Landuse military</option>
+                                <option value="landuse_residentialetc">Landuse residential etc.</option>
+                                <option value="landuse_transport">Landuse transport</option>
+                                <option value="landuse_water">Landuse water</option>
+                            </optgroup>
 
-                        <optgroup label="Border's">
-                            <option value="boundary_admin_2_lines">Boundary admin_2 lines</option>
-                            <!--<option value="boundary_admin_3_lines">Boundary admin_3 lines</option>-->
-                            <option value="boundary_admin_4_lines">Boundary admin_4 lines</option>
-                            <!--<option value="boundary_admin_5_lines">Boundary admin_5 lines</option>-->
-                            <option value="boundary_admin_6_lines">Boundary admin_6 lines</option>
-                            <!--<option value="boundary_admin_7_lines">Boundary_admin_7 lines</option>-->
-                            <!--<option value="boundary_admin_8_lines">Boundary_admin_8 lines</option>-->
-                            <option value="boundary_admin_9_lines">Boundary admin_9 lines</option>
-                            <!--<option value="boundary_admin_10_lines">Boundary admin_10 lines</option>-->
-                        </optgroup>
+                            <!--<optgroup label="Label for landuse">-->
+                                <!--<option value="landuse_brown_label">Landuse brown label</option>-->
+                                <!--<option value="landuse_commercialetc_label">Landuse commercial etc. label</option>-->
+                                <!--<option value="landuse_freegreenandwood_label">Landuse free green and wood label</option>-->
+                                <!--<option value="landuse_gardeningandfarm_label">Landuse gardening and farm label</option>-->
+                                <!--<option value="landuse_grey_label">Landuse grey label</option>-->
+                                <!--<option value="landuse_industrial_label">Landuse industrial label</option>-->
+                                <!--<option value="landuse_military_label">Landuse military label</option>-->
+                                <!--<option value="landuse_residentialetc_label">Landuse residential etc. label</option>-->
+                                <!--<option value="landuse_transport_label">Landuse transport label</option>-->
+                                <!--<option value="landuse_water_label">Landuse water label</option>-->
+                            <!--</optgroup>-->
 
-                        <!--<optgroup label="Point's">-->
-                        <!--<option value="shop_points">Shop points</option>-->
-                        <!--<option value="public_transport_points">Public transport points</option>-->
-                        <!--<option value="natural_points">Natural points</option>-->
-                        <!--<option value="aeroway_points">Aeroway points</option>-->
-                        <!--<option value="craft_points">Craft points</option>-->
-                        <!--</optgroup>-->
-                    </select>
+                            <optgroup class="line" label="Line's">
+                                <option value="highway_path_lines">Highway path lines</option>
+                                <option value="highway_small_lines">Highway small lines</option>
+                                <option value="highway_tertiary_lines">Highway tertiary lines</option>
+                                <option value="highway_huge_lines">Highway huge lines</option>
+                                <option value="highway_secondary_lines">Highway secondary lines</option>
+                                <option value="highway_primary_lines">Highway primary lines</option>
+                                <option value="railway_lines">Railway lines</option>
+                            </optgroup>
+
+                            <optgroup class="line" label="Border's">
+                                <option value="boundary_admin_2_lines">Boundary admin_2 lines</option>
+                                <!--<option value="boundary_admin_3_lines">Boundary admin_3 lines</option>-->
+                                <option value="boundary_admin_4_lines">Boundary admin_4 lines</option>
+                                <!--<option value="boundary_admin_5_lines">Boundary admin_5 lines</option>-->
+                                <option value="boundary_admin_6_lines">Boundary admin_6 lines</option>
+                                <!--<option value="boundary_admin_7_lines">Boundary_admin_7 lines</option>-->
+                                <!--<option value="boundary_admin_8_lines">Boundary_admin_8 lines</option>-->
+                                <option value="boundary_admin_9_lines">Boundary admin_9 lines</option>
+                                <!--<option value="boundary_admin_10_lines">Boundary admin_10 lines</option>-->
+                            </optgroup>
+
+                            <!--<optgroup label="Point's">-->
+                            <!--<option value="shop_points">Shop points</option>-->
+                            <!--<option value="public_transport_points">Public transport points</option>-->
+                            <!--<option value="natural_points">Natural points</option>-->
+                            <!--<option value="aeroway_points">Aeroway points</option>-->
+                            <!--<option value="craft_points">Craft points</option>-->
+                            <!--</optgroup>-->
+                        </select>
+
+                    </div>
+                </div>
+
+                <div id="saveMap" class="well">
+                    <div class="navigator">
+                        <button id="backToDraw" class="navigator-button back"><i class="fas fa-angle-left"></i></button>
+                        <label class="margin-center">Save your Map</label>
+                        <button id="save" class="navigator-button"><i class="fas fa-check"></i></button>
+                    </div>
+                    <hr class="separator">
+
+                    <div>
+                        <input type="text" placeholder="Year">
+                        <input type="text" placeholder="Your Name">
+                        <input type="text" placeholder="Description of the uploaded map">
+                    </div>
                 </div>
             </div>
 
-            <div id="saveMap" class="well">
-                <label>Save your Map</label>
-                <br>
-
-                <br>
-                <br>
-                <div><input type="text"> <input type="submit"></div>
-                <p class="text-hint" style="color: #ff0014;">Please give your map a characteristic name.</p>
-                <p class="text-example" style="color: #4b4e50;">e.g. 1811-11-21-Berlin-Kreuzberg</p>
-            </div>
-            <button onclick="">TESTBUTTON</button>
         </div>
     </div>
+
+    <button id="testButton" >TESTBUTTON</button>
+
     Time dimension is already implemented (note date parameter in URL).
     There are no valid historical data in the system, though....
     <br/>
@@ -268,9 +300,10 @@
 
 <script type="application/javascript" src="js/map-layers.js"></script>
 <script type="application/javascript" src="js/ohdm.js"></script>
-<script type="application/javascript" src="js/upload.js"></script>
-<script type="application/javascript" src="js/imageProcessing.js"></script>
+<script type="application/javascript" src="js/uploadMap.js"></script>
+<script type="application/javascript" src="js/adjustMap.js"></script>
 <script type="application/javascript" src="js/drawLayer.js"></script>
+<script type="application/javascript" src="js/navigation.js"></script>
 
 <script type="application/javascript" src="js/info.js"></script>
 </body>

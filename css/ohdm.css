@@ -27,3 +27,47 @@ body {
     max-height: fit-content;
 
 }
+
+.fa-angle-left {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.fa-angle-right {
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.margin-center {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.separator {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.navigator {
+    display: flex;
+}
+
+.flex-wraper {
+    /*display: flex;*/
+    /*flex: 0 0 100%;*/
+    /*flex-basis: auto;*/
+}
+
+.navigator-button {
+    /*color: transparent;*/
+    border: transparent;
+    background-color: transparent;
+}
+
+.code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px
+}
