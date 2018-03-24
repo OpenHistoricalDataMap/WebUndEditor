@@ -1,7 +1,4 @@
-// Process data from #drawProperties
 document.getElementById("upload").addEventListener('change', dateiupload);
-
-
 function dateiupload(evt) {
     var _URL = window.URL || window.webkitURL;
     var dateien = evt.target.files; // FileList objekt
@@ -27,8 +24,6 @@ function dateiupload(evt) {
 
     // Die Datei einlesen und in eine Data-URL konvertieren
     objectURL = _URL.createObjectURL(uploadDatei);
-
-    console.log(objectURL);
 
     // Read out dimensions of the image
     var image_html = new Image();

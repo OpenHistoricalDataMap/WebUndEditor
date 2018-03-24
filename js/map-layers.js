@@ -1,4 +1,4 @@
-function loadBaseMapLayers() {
+function getBaseMapLayers() {
 
     // get map date by URI
     var date = location.search.split('date=')[1] ? location.search.split('date=')[1] : '2017-01-01';
@@ -168,7 +168,7 @@ function loadBaseMapLayers() {
             source: new ol.source.TileWMS({
                 url: 'http://ohm.f4.htw-berlin.de:8080/geoserver/ohdm_t/wms',
                 params: {'LAYERS': 'ohdm_t:railway_lines', 'format': 'image/png', 'date': date},
-                viewparams: mapdate,
+                viewparams: mapdate
                 /*
                 zIndex: 0,
                 minResolution 200,
@@ -648,7 +648,7 @@ function loadBaseMapLayers() {
         landuse_transport_label,
         landuse_water_label,
 
-        building_polygons_label,
+        building_polygons_label
 
 
         //	shop_points,

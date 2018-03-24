@@ -38,11 +38,6 @@ $("#saveMap > .navigator > .back").on('click', function () {
     previousPanel('#saveMap', '#drawMap');
 });
 
-$("#save").on('click', function () {
-   alert("Thanks for sharing your map");
-});
-
-
 
 
 for (i = 0; i < panels.length; i++) {

@@ -53,8 +53,8 @@ body {
 }
 
 .flex-wraper {
-    /*display: flex;*/
-    /*flex: 0 0 100%;*/
+    display: flex;
+    flex: 0 0 100%;
     /*flex-basis: auto;*/
 }
 
@@ -70,4 +70,17 @@ body {
     color: #c7254e;
     background-color: #f9f2f4;
     border-radius: 4px
+}
+
+.header {
+    margin-left: 30%;
+}
+
+#editorPanel {
+    transition: all 5s linear;
+}
+
+#info-editor {
+    background-color: transparent;
+    border-color: transparent;
 }

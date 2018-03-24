@@ -1,4 +1,4 @@
-// Open street map
+// Open street map for development purposes
 var OSM =
     new ol.layer.Tile({
         source: new ol.source.OSM()
@@ -13,8 +13,7 @@ var map =
             zoom: 11
         }),
         layers: [
-            //loadBaseMapLayers(),
-            //overlay_image_layer,
+            // getBaseMapLayers()//,
             OSM
         ],
         interactions: ol.interaction.defaults().extend([
