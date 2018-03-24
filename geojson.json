@@ -1,0 +1,81 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          1497184.0347451065,
+          6897374.794841984
+        ]
+      },
+      "properties": {
+        "layer": "shop_points",
+        "name": "telekom",
+        "date": "1723-11-01",
+        "map_author": "Gauss",
+        "uploader": "Sam",
+        "description": "describere"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            1484113.3029083414,
+            6887973.040362908
+          ],
+          [
+            1504980.6116301946,
+            6890266.151211463
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "highway_path_lines",
+        "name": "a7",
+        "date": "1723-11-01",
+        "map_author": "Gauss",
+        "uploader": "Sam",
+        "description": "describere"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1475093.7335706905,
+              6892788.573144874
+            ],
+            [
+              1489234.5838034481,
+              6896916.172672274
+            ],
+            [
+              1489463.8948883037,
+              6891642.017720596
+            ],
+            [
+              1475093.7335706905,
+              6892788.573144874
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "layer": "natural_polygons",
+        "name": "Tiergarten",
+        "date": "1723-11-01",
+        "map_author": "Gauss",
+        "uploader": "Sam",
+        "description": "describere"
+      }
+    }
+  ]
+}
