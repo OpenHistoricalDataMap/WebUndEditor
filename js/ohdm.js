@@ -13,8 +13,8 @@ var map =
             zoom: 11
         }),
         layers: [
-            // getBaseMapLayers()//,
-            OSM
+            getBaseMapLayers()//,
+            //OSM
         ],
         interactions: ol.interaction.defaults().extend([
             new ol.interaction.DragRotateAndZoom()
