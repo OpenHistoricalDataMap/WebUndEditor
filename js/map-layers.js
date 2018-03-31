@@ -1,3 +1,8 @@
+/*
+author: Samuel Erb
+e-mail: s0556350@htw-berlin.de
+*/
+
 function getBaseMapLayers() {
 
     // get map date by URI

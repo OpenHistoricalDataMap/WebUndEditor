@@ -1,3 +1,8 @@
+/*
+author: Samuel Erb
+e-mail: s0556350@htw-berlin.de
+*/
+
 var source = new ol.source.Vector({wrapX: false});
 var collection = new ol.Collection();
 

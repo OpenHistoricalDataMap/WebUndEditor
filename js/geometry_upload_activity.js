@@ -1,3 +1,7 @@
+/*
+author: Samuel Erb
+e-mail: s0556350@htw-berlin.de
+*/
 
 // remote json data export
 var apiPathname = '/api.php';

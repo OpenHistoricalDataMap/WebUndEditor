@@ -1,3 +1,8 @@
+/*
+author: Samuel Erb
+e-mail: s0556350@htw-berlin.de
+*/
+
 // Open street map for development purposes
 var OSM =
     new ol.layer.Tile({
