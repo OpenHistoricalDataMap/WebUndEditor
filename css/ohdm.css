@@ -23,7 +23,6 @@ body {
 }
 
 #map {
-    height: 700px;
     max-height: fit-content;
 
 }
