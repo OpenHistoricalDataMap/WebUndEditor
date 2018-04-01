@@ -54,3 +54,10 @@ service apache2 reload
 # Super user out
 exit
 ```
+
+
+## Kleiner Php-Server zum testen und arbeiten
+
+```bash
+php -S localhost:8080 -t ./
+```
