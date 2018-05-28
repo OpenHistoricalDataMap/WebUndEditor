@@ -39,9 +39,8 @@ Anwendung der Komponente nennen (Use Case).
 
 Der Editor bietet eine Schnittstelle nach außen, mit der er die aufgezeichneten Daten an den Server schickt.
 
-Der Editor lädt sich die Layer, welche für die OHDM Map benötigt werden, von dem Geo-Server und erzeugt mithilfe der OSMdroid-Api eine Karte auf dem Smartphone. Der Nutzer hat die Möglichkeit eine Strecke oder ein Gebiet aufzuzeichnen und abzuspeichern. Des weiteren soll ein Zeitstempel und ein Name angegeben werden können um Historische Orte zu dokumentieren.
+Das verwendete Framework OpenLayer’s lädt das Kartenmaterial vom Geo-Server und erzeugt damit eine Karte. Mithilfe des Editors wird eine historische Karte hochgeladen und in die Karte eingefügt. Diese kann man anschließend skalieren und verschieben. Der Nutzer hat die Möglichkeit eine Strecke oder ein Gebiet aufzuzeichnen und abzuspeichern. Des weiteren wird ein Zeitstempel und ein Name angegeben um Historische Orte zu dokumentieren. Diese Informationen liegen am Ende des Prozesses als GeoJSOn vor und kann an eine Schnittstelle gesendet werden.
 
-Die aufgezeichnete Strecke wird auf der Karte als Rote Linie Dargestellt, welche sich kontinuierlich während der aufzeichnungs-Phase verändert. Der Nutzer hat anschließend die Möglichkeit anzugeben um was es sich handelt (Gebiet,Punkt,Strecke). Die aufgezeichneten Daten werden als GeoJSON zwischengespeichert und sollen anschließend an die Import-Schnittelle übertragen werden.
 
 \subsection{Schnittstellendefinitionen}
 
