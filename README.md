@@ -2,7 +2,7 @@
 
 ## Aufgabe der Komponente
 
-Der Web-Editor soll dem Nutzer die Möglichkeit bieten alte historische Karten, die schon digitalisiert wurden und als Bilddatei vorliegen, in das OHDM-Projekt einzupflegen. Die aufgezeichneten Daten sollen als GeoJSON gespeichert und anschließend per API-Schnittstelle in die Datenbank eingefügt werden.
+Der Web-Editor soll dem Nutzer die Möglichkeit bieten historische Karten, die schon digitalisiert wurden und als Bilddatei vorliegen, in das OHDM-Projekt einzupflegen. Die aufgezeichneten Daten sollen als GeoJSON gespeichert und anschließend per API-Schnittstelle in die Datenbank eingefügt werden.
 
 
 ## Architektur
@@ -38,15 +38,15 @@ Hier wird eine neue „ol.layer“ erstellt, diese enthält ein Objekt der Klass
 Ein Feature kann ein Point, LineString oder Polygon sein.
 Um nun ein Bild auf der Karte anzuzeigen benutze ich als Geometrie einen Punkt, dem ich das Bild als Style-Objekt (ol.style.Icon)zugewiesen habe.
 
-Um das Feature (der Punkt samt seinem Bild als Style) wurden die Interactions Select und Translate (ol.interaction.Select, ol.interaction.Translate) zur Karte hinzugefügt.
+Um das Feature (der Punkt samt seinem Bild als Style) auf der Karte zu bewegen und zu skalieren, wurden die Interactions Select und Translate (ol.interaction.Select, ol.interaction.Translate) zur Karte hinzugefügt.
 
-Falls in die Karte hineingezoomt wird sollte das Bild im selben Verhältnis bleiben. Das war ganz schön tricky da die Zoomstufe der Karte (map.getView().getResolution())von annähernd 0 bis zu einer hohen positiven Zahl wobei kleine Zahlen nah an der Erde und hohe Zahlen weiter weg sind. Bei der Zoomstufe des Bildes (style.getImage().getScale()) ist es andersrum.
+Falls in die Karte hineingezoomt wird sollte das Bild im selben Verhältnis bleiben. Das war ganz schön tricky da die Zoomstufe der Karte (map.getView().getResolution())von annähernd 0 bis zu einer hohen positiven Zahl geht. Wobei kleine Zahlen nah an der Erde und hohe Zahlen weiter weg sind. Bei der Zoomstufe des Bildes (style.getImage().getScale()) ist es andersrum.
 
-Um trotzdem das ungefähr selbe Verhältnis beizubehalten(bei mehrmaligen raus und reinzoomen sieht man das es verändert), wurde die initiale Zoomstufe der Karte erfasst. Diese wird beim zoomen dazu verwendet die Differenz der Zoomstufe zu bestimmten. Dieser Wert wird mit dem Verhältnis (Kartenzoom / Bildzoom) multipliziert. Dieser Wert wiederum mit dem Bildzoom addiert und das Ergebnis als neuer Bildzoom festgelegt. (siehe adjust_activity.js Line 47-53).
+Um trotzdem das ungefähr selbe Verhältnis beizubehalten (bei mehrmaligen raus und reinzoomen sieht man das es sich verändert), wurde die initiale Zoomstufe der Karte erfasst. Diese wird beim zoomen dazu verwendet die Differenz der Zoomstufe zu bestimmten. Dieser Wert wird mit dem Verhältnis (Kartenzoom / Bildzoom) multipliziert. Der daraus resultierende Wert wiederum mit dem Bildzoom addiert und das Ergebnis als neuer Bildzoom festgelegt. (siehe adjust_activity.js Line 47-53).
 
 ### draw_activity
 Ist nun ein Bild in der Karte vorhanden kann man damit beginnen Geometrien einzuzeichnen.
-Dazu wird eine Layer (ol.layer) erzeugt, die die eingezeichneten Geometrien aufnehmen soll. In der Theorie werden diese aber in eine Source (ol.source) gemalt, die der Layer als Datenhaltung dient. Die Geometrien werden per Draw-Interaction (ol.interaction.Draw) in der Source sowie der Collection (ol.collection) gespeichert. Die Collection dient später zum auslesen der Daten. Per setProperties() werden Attribute zu den gezeichneten Geometrien -> Features hinzugefügt.
+Dazu wird ein Layer-Objekt (ol.layer) erzeugt, dass die eingezeichneten Geometrien aufnehmen soll. In der Theorie werden diese aber in eine Source (ol.source) gemalt, die der Layer als Datenhaltung dient. Die Geometrien werden per Draw-Interaction (ol.interaction.Draw) in der Source sowie der Collection (ol.collection) gespeichert. Die Collection dient später zum auslesen der Daten. Per setProperties() werden Attribute zu den gezeichneten Geometrien -> Features hinzugefügt.
 
 ### geometry_upload_activity
 Hier werden die Daten gesammelt und entweder an die Import-Schnittstelle per AJAX-Post gesendet oder per Button heruntergeladen.
